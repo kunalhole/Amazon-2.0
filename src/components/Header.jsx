@@ -6,10 +6,17 @@ import {
 } from "@heroicons/react/outline"
 
 import { signIn, signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/router"
+import { useSelector } from "react-redux"
+import { selectItems } from "../slices/basketSlice"
 
 const Header = () => {
   const { data: session } = useSession()
-  console.log(session)
+  const router = useRouter()
+
+  //redux part to access the values from the basketSlice
+
+  const items = useSelector(selectItems)
   return (
     <header>
       {/* Top nav */}
@@ -17,6 +24,7 @@ const Header = () => {
       <div className="flex bg-amazon_blue py-2 items-center p-1 flex-grow">
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
+            onClick={() => router.push("/")}
             src="https://links.papareact.com/f90"
             width={150}
             height={40}
@@ -46,9 +54,12 @@ const Header = () => {
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
-          <div className="link relative flex items-center">
+          <div
+            onClick={() => router.push("/checkout")}
+            className="link relative flex items-center"
+          >
             <span className="absolute top-0 right-0 md:right-10  h-4 w-4 bg-yellow-400 text-center text-black font-bold rounded-full">
-              0
+              {items.length ? `${items.length}` : 0}
             </span>
             <ShoppingCartIcon className="h-10" />
             <p className="hidden md:inline font-extrabold md:text-sm  mt-2">
